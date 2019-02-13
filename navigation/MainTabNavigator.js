@@ -10,9 +10,17 @@ import HomeScreen from "../screens/HomeScreen";
 import LinksScreen from "../screens/LinksScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 import WalkthroughEvents from "../matdesign/index";
-
+import MyTables from "../components/mytables/mytables";
+import TableView from "../components/tableview/tableview";
+import InvitationList from "../components/invitationlist/invitationlist";
+import InvitationResponse from "../components/invitationresponse/invitationresponse";
+import DataEntry from "../components/invitationresponse/dataentry/dataentry";
 const HomeStack = createStackNavigator({
-  Home: WalkthroughEvents
+  Home: MyTables,
+  TableView: TableView,
+  InvitationList: InvitationList,
+  InvitationResponse: InvitationResponse,
+  DataEntry: DataEntry
 });
 
 HomeStack.navigationOptions = {

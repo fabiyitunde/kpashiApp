@@ -26,9 +26,22 @@ import {
   Label
 } from "native-base";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { connect } from "react-redux";
+import { loginuser } from "../../redux/actions/appStateActions";
 // Screen Styles
 import styles from "./styles";
-export default class Login extends Component {
+class Login extends Component {
+  state = {
+    email: "",
+    password: ""
+  };
+  constructor(props) {
+    super(props);
+    this.handleLogin = this.handleLogin.bind(this);
+  }
+  handleLogin() {
+    this.props.loginuser(this.state.email, this.state.password);
+  }
   componentWillMount() {
     var that = this;
     BackHandler.addEventListener("hardwareBackPress", function() {
@@ -96,6 +109,10 @@ export default class Login extends Component {
                   keyboardType="email-address"
                   textAlign={I18nManager.isRTL ? "right" : "left"}
                   style={styles.inputText}
+                  onChangeText={text => {
+                    this.setState({ email: text });
+                  }}
+                  value={this.state.email}
                 />
               </Item>
               <Item floatingLabel style={styles.passwordText}>
@@ -109,11 +126,15 @@ export default class Login extends Component {
                   secureTextEntry={true}
                   textAlign={I18nManager.isRTL ? "right" : "left"}
                   style={styles.inputText}
+                  onChangeText={text => {
+                    this.setState({ password: text });
+                  }}
+                  value={this.state.password}
                 />
               </Item>
               <TouchableOpacity
                 style={styles.TouchableOpacityStyle}
-                onPress={() => alert("Sign In")}
+                onPress={this.handleLogin}
               >
                 <Text style={styles.TouchableOpacityText}>Sign In</Text>
               </TouchableOpacity>
@@ -138,3 +159,12 @@ export default class Login extends Component {
     );
   }
 }
+function mapStateToProps(state, props) {
+  return {};
+}
+
+//Connect everything
+export default connect(
+  mapStateToProps,
+  { loginuser }
+)(Login);

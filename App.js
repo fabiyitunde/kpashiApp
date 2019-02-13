@@ -47,10 +47,14 @@ export default class App extends React.Component {
         // This is the font that we are using for our tab bar
         ...Icon.Ionicons.font,
         // We include SpaceMono because we use it in HomeScreen.js. Feel free
-        // to remove this if you are not using it in your app
+        // to remove this if you are not using it in your app HelveticaNeue-Light
         "space-mono": require("./assets/fonts/SpaceMono-Regular.ttf"),
         "SFUIDisplay-Regular": require("./assets/fonts/SFUIDisplay-Regular.ttf"),
-        "SFUIDisplay-Semibold": require("./assets/fonts/SF-UI-Display-Semibold.ttf")
+        "SFUIDisplay-Semibold": require("./assets/fonts/SF-UI-Display-Semibold.ttf"),
+        "HelveticaNeue-Light": require("./assets/fonts/HelveticaNeue-Light.ttf"),
+        "SFUIDisplay-Medium": require("./assets/fonts/SF-UI-Display-Medium.ttf"),
+        Roboto_medium: require("./assets/fonts/Roboto-Medium.ttf"),
+        "SFUIDisplay-Bold": require("./assets/fonts/SFUIDisplay-Bold.ttf")
       })
     ]);
   };

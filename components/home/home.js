@@ -9,7 +9,12 @@ import {
 import { AppLoading, Asset, Font, Icon } from "expo";
 import AppNavigator from "../../navigation/AppNavigator";
 import Login from "../login/login";
+import { getItemFromLocalStorage } from "../../utilities/localstore";
 import { connect } from "react-redux";
+import {
+  loggin_authenticated_user,
+  initSocketIO
+} from "../../redux/actions/appStateActions";
 class Home extends React.Component {
   state = {
     isLoadingComplete: false
@@ -17,6 +22,18 @@ class Home extends React.Component {
 
   componentDidMount() {
     // logIn();
+
+    var loginuser = async () => {
+      const auth = await getItemFromLocalStorage("auth");
+      if (auth) {
+        const json = JSON.parse(auth);
+        this.props.loggin_authenticated_user(json.id);
+      }
+    };
+
+    (async () => {
+      await loginuser();
+    })();
   }
   render() {
     if (!this.props.loggedIn) {
@@ -50,7 +67,7 @@ function mapStateToProps(state, props) {
 //Connect everything
 export default connect(
   mapStateToProps,
-  {}
+  { loggin_authenticated_user, initSocketIO }
 )(Home);
 
 const styles = StyleSheet.create({
