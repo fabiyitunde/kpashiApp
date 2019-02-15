@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.transparent,
     textAlign: "center",
     alignSelf: "center",
-    fontSize: Fonts.moderateScale(33),
+    fontSize: Fonts.moderateScale(30),
     width: Metrics.WIDTH * 0.85,
     color: Colors.black,
     marginTop: Metrics.HEIGHT * 0.01
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   dataStyle: {
     backgroundColor: Colors.snow,
     borderRadius: 4,
-    height: Metrics.HEIGHT * 0.225,
+    height: Metrics.HEIGHT * 0.17,
     width: Metrics.WIDTH * 0.26,
     margin: Metrics.WIDTH * 0.015,
     elevation: 5,
@@ -88,9 +88,9 @@ const styles = StyleSheet.create({
 
   dataImage: {
     height: Metrics.HEIGHT * 0.1,
-    width: Metrics.WIDTH * 0.26,
+    width: Metrics.WIDTH * 0.1,
     borderRadius: 4,
-    resizeMode: "stretch"
+    resizeMode: "center"
   },
 
   dataText: {

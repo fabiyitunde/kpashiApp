@@ -37,8 +37,7 @@ import { connect } from "react-redux";
 import PlayerList from "../playerlist/playerlist";
 import { globalParams } from "../../params";
 import { getItemFromLocalStorageSync } from "../../utilities/localstore";
-const profileImg =
-  "https://antiqueruby.aliansoftware.net//Images/profile/ic_profile_pic_pten.jpg";
+import { loadGame } from "../../redux/actions/gameStateActions";
 const bgImage =
   "https://antiqueruby.aliansoftware.net//Images/profile/background_p30.png";
 
@@ -122,7 +121,14 @@ class TableView extends Component {
   };
 
   _handleIndexChange = index => this.setState({ index });
-
+  handleLoadGame = async () => {
+    var authdata = JSON.parse(await getItemFromLocalStorageSync("auth"));
+    this.props.loadGame(this.tableid, authdata.id, () => {
+      this.props.navigation.navigate("GameConsole", {
+        tableid: this.tableid
+      });
+    });
+  };
   _renderHeader = props => (
     <TabBar
       {...props}
@@ -142,7 +148,7 @@ class TableView extends Component {
   componentWillMount() {
     var that = this;
     BackHandler.addEventListener("hardwareBackPress", function() {
-      that.props.navigation.navigate("Profile");
+      that.props.navigation.navigate("Home");
       return true;
     });
   }
@@ -224,13 +230,17 @@ class TableView extends Component {
                 />
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => alert("Comment")}
+                onPress={() =>
+                  this.props.navigation.navigate("LoadCredit", {
+                    tableid: this.tableid
+                  })
+                }
                 style={styles.commentBg}
               >
                 <FontAwesome name="comment" size={20} color="white" />
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => alert("Call")}
+                onPress={() => this.handleLoadGame()}
                 style={styles.callBg}
               >
                 <Ionicons name="ios-call" size={27} color="white" />
@@ -278,5 +288,5 @@ function mapStateToProps(state, props) {
 //Connect everything
 export default connect(
   mapStateToProps,
-  {}
+  { loadGame }
 )(TableView);

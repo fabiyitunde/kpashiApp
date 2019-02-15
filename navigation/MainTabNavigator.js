@@ -15,12 +15,16 @@ import TableView from "../components/tableview/tableview";
 import InvitationList from "../components/invitationlist/invitationlist";
 import InvitationResponse from "../components/invitationresponse/invitationresponse";
 import DataEntry from "../components/invitationresponse/dataentry/dataentry";
+import GameConsole from "../components/gameconsole/gameconsole";
+import LoadCredit from "../components/loadcredit/loadcredit";
 const HomeStack = createStackNavigator({
   Home: MyTables,
   TableView: TableView,
   InvitationList: InvitationList,
   InvitationResponse: InvitationResponse,
-  DataEntry: DataEntry
+  DataEntry: DataEntry,
+  GameConsole: GameConsole,
+  LoadCredit: LoadCredit
 });
 
 HomeStack.navigationOptions = {
@@ -65,8 +69,4 @@ SettingsStack.navigationOptions = {
   )
 };
 
-export default createBottomTabNavigator({
-  HomeStack,
-  LinksStack,
-  SettingsStack
-});
+export default HomeStack;

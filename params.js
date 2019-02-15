@@ -4,9 +4,13 @@ export const globalParams = {
 
 export const serverTriggeredActions = {
   tableinvite: "tableinvite",
-  tableinviteResponse: "tableinviteResponse"
+  tableinviteResponse: "tableinviteResponse",
+  gameViewOpened: "gameViewOpened"
 };
 export const clientTriggeredActions = {
   pendingInvitationTreated: "pendingInvitationTreated",
-  pendingInvitationRejected: "pendingInvitationRejected"
+  pendingInvitationRejected: "pendingInvitationRejected",
+  gameLoaded: "gameLoaded",
+  iAmReadyToPlay: "iAmReadyToPlay",
+  creditLoaded: "creditLoaded"
 };

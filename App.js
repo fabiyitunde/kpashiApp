@@ -4,7 +4,8 @@ import {
   StatusBar,
   StyleSheet,
   View,
-  AsyncStorage
+  AsyncStorage,
+  YellowBox
 } from "react-native";
 import { AppLoading, Asset, Font, Icon } from "expo";
 import AppNavigator from "./navigation/AppNavigator";
@@ -18,6 +19,9 @@ export default class App extends React.Component {
 
   componentDidMount() {
     // logIn();
+    YellowBox.ignoreWarnings([
+      "Unrecognized WebSocket connection option(s) `agent`, `perMessageDeflate`, `pfx`, `key`, `passphrase`, `cert`, `ca`, `ciphers`, `rejectUnauthorized`. Did you mean to put these under `headers`?"
+    ]);
   }
   render() {
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
@@ -31,7 +35,7 @@ export default class App extends React.Component {
     } else {
       return (
         <Provider store={store}>
-          <Home />
+          <AppNavigator />
         </Provider>
       );
     }
@@ -41,7 +45,8 @@ export default class App extends React.Component {
     return Promise.all([
       Asset.loadAsync([
         require("./assets/images/robot-dev.png"),
-        require("./assets/images/robot-prod.png")
+        require("./assets/images/robot-prod.png"),
+        require("./assets/sound/dropcard.wav")
       ]),
       Font.loadAsync({
         // This is the font that we are using for our tab bar
@@ -54,7 +59,8 @@ export default class App extends React.Component {
         "HelveticaNeue-Light": require("./assets/fonts/HelveticaNeue-Light.ttf"),
         "SFUIDisplay-Medium": require("./assets/fonts/SF-UI-Display-Medium.ttf"),
         Roboto_medium: require("./assets/fonts/Roboto-Medium.ttf"),
-        "SFUIDisplay-Bold": require("./assets/fonts/SFUIDisplay-Bold.ttf")
+        "SFUIDisplay-Bold": require("./assets/fonts/SFUIDisplay-Bold.ttf"),
+        "Avenir-Black": require("./assets/fonts/Avenir-Black.ttf")
       })
     ]);
   };

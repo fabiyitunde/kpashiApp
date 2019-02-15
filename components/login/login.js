@@ -9,7 +9,9 @@ import {
   Platform,
   StatusBar,
   BackHandler,
-  I18nManager
+  I18nManager,
+  KeyboardAvoidingView,
+  ScrollView
 } from "react-native";
 import {
   Container,
@@ -30,6 +32,7 @@ import { connect } from "react-redux";
 import { loginuser } from "../../redux/actions/appStateActions";
 // Screen Styles
 import styles from "./styles";
+import * as rn from "react-navigation";
 class Login extends Component {
   state = {
     email: "",
@@ -54,10 +57,6 @@ class Login extends Component {
     let pic = {
       uri:
         "https://antiqueruby.aliansoftware.net/Images/signin/background_snine.png"
-    };
-    let ic_logo = {
-      uri:
-        "https://antiqueruby.aliansoftware.net/Images/signin/logo_mountify_snine.png"
     };
 
     StatusBar.setBarStyle("dark-content", true);
@@ -87,73 +86,88 @@ class Login extends Component {
             </Body>
             <Right style={styles.right} />
           </Header>
-
-          <View style={styles.mainLogoSec}>
-            <Image source={ic_logo} style={styles.mainLogo} />
-          </View>
-
-          <View style={styles.inputFieldSec}>
-            <Form style={styles.formStyle}>
-              <Item
-                floatingLabel
-                textAlign={I18nManager.isRTL ? "right" : "left"}
-                style={styles.emailText}
-              >
-                <Label
-                  textAlign={I18nManager.isRTL ? "right" : "left"}
-                  style={{ color: "red", right: 0 }}
-                >
-                  Email
-                </Label>
-                <Input
-                  keyboardType="email-address"
-                  textAlign={I18nManager.isRTL ? "right" : "left"}
-                  style={styles.inputText}
-                  onChangeText={text => {
-                    this.setState({ email: text });
-                  }}
-                  value={this.state.email}
+          <KeyboardAvoidingView
+            style={{ flex: 1 }}
+            keyboardVerticalOffset={Platform.select({
+              ios: 0,
+              android: rn.Header.HEIGHT * 2
+            })}
+            behavior={Platform.OS === "ios" ? "padding" : "padding"}
+          >
+            <ScrollView style={styles.inputFieldSec}>
+              <View style={styles.mainLogoSec}>
+                <Image
+                  source={require("../../assets/images/logo.png")}
+                  style={styles.mainLogo}
                 />
-              </Item>
-              <Item floatingLabel style={styles.passwordText}>
-                <Label
-                  textAlign={I18nManager.isRTL ? "right" : "left"}
-                  style={{ fontFamily: "SFUIDisplay-Regular", paddingTop: 1 }}
-                >
-                  Password
-                </Label>
-                <Input
-                  secureTextEntry={true}
-                  textAlign={I18nManager.isRTL ? "right" : "left"}
-                  style={styles.inputText}
-                  onChangeText={text => {
-                    this.setState({ password: text });
-                  }}
-                  value={this.state.password}
-                />
-              </Item>
-              <TouchableOpacity
-                style={styles.TouchableOpacityStyle}
-                onPress={this.handleLogin}
-              >
-                <Text style={styles.TouchableOpacityText}>Sign In</Text>
-              </TouchableOpacity>
-            </Form>
-          </View>
+              </View>
 
-          <View style={styles.view03}>
-            <View style={styles.bottomText}>
-              <Text style={styles.bottomText01}>
-                Don&apos;t have an account?
-              </Text>
-              <TouchableOpacity
-                style={styles.signUpTxtBg}
-                onPress={() => alert("Sign Up")}
-              >
-                <Text style={styles.bottomText02}>Sign up</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
+              <View style={styles.inputFieldSec}>
+                <Form style={styles.formStyle}>
+                  <Item
+                    floatingLabel
+                    textAlign={I18nManager.isRTL ? "right" : "left"}
+                    style={styles.emailText}
+                  >
+                    <Label
+                      textAlign={I18nManager.isRTL ? "right" : "left"}
+                      style={{ color: "red", right: 0 }}
+                    >
+                      Email
+                    </Label>
+                    <Input
+                      keyboardType="email-address"
+                      textAlign={I18nManager.isRTL ? "right" : "left"}
+                      style={styles.inputText}
+                      onChangeText={text => {
+                        this.setState({ email: text });
+                      }}
+                      value={this.state.email}
+                    />
+                  </Item>
+                  <Item floatingLabel style={styles.passwordText}>
+                    <Label
+                      textAlign={I18nManager.isRTL ? "right" : "left"}
+                      style={{
+                        fontFamily: "SFUIDisplay-Regular",
+                        paddingTop: 1
+                      }}
+                    >
+                      Password
+                    </Label>
+                    <Input
+                      secureTextEntry={true}
+                      textAlign={I18nManager.isRTL ? "right" : "left"}
+                      style={styles.inputText}
+                      onChangeText={text => {
+                        this.setState({ password: text });
+                      }}
+                      value={this.state.password}
+                    />
+                  </Item>
+                  <TouchableOpacity
+                    style={styles.TouchableOpacityStyle}
+                    onPress={this.handleLogin}
+                  >
+                    <Text style={styles.TouchableOpacityText}>Sign In</Text>
+                  </TouchableOpacity>
+                </Form>
+              </View>
+              <View style={styles.view03}>
+                <View style={styles.bottomText}>
+                  <Text style={styles.bottomText01}>
+                    Don&apos;t have an account?
+                  </Text>
+                  <TouchableOpacity
+                    style={styles.signUpTxtBg}
+                    onPress={() => alert("Sign Up")}
+                  >
+                    <Text style={styles.bottomText02}>Sign up</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </ScrollView>
+          </KeyboardAvoidingView>
         </ImageBackground>
       </Container>
     );

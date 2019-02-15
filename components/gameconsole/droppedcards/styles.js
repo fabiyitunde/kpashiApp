@@ -1,5 +1,5 @@
 import { Platform, StyleSheet, Dimensions } from "react-native";
-import { Fonts, Metrics, Colors } from "../../Themes/";
+import { Fonts, Metrics, Colors } from "../../../Themes/";
 
 const styles = StyleSheet.create({
   logosec: {
@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     flexDirection: "row"
   },
   imgs: {
-    paddingRight: Metrics.WIDTH * 0.05
+    paddingRight: Metrics.WIDTH * 0.005
   },
   backbtn: {
     width: 30
@@ -156,13 +156,14 @@ const styles = StyleSheet.create({
 
   listContainer: {
     backgroundColor: "white",
-    paddingLeft: Metrics.WIDTH * 0.04
+    marginLeft: Metrics.WIDTH * 0.015
   },
 
   postImageContent: {
     flexDirection: "row",
     paddingTop: Metrics.HEIGHT * 0.015,
-    paddingBottom: Metrics.HEIGHT * 0.01
+    paddingBottom: Metrics.HEIGHT * 0.01,
+    width: Metrics.WIDTH
   },
 
   name: {
@@ -174,7 +175,7 @@ const styles = StyleSheet.create({
 
   notification: {
     color: "#b7b7b7",
-    fontFamily: Fonts.type.SFUIDisplayRegular,
+    fontFamily: Fonts.type.SFUIDisplayBold,
     fontSize: 12
   },
 
@@ -188,8 +189,8 @@ const styles = StyleSheet.create({
   },
 
   postedImage: {
-    height: Metrics.HEIGHT * 0.09,
-    width: Metrics.HEIGHT * 0.09
+    height: Metrics.HEIGHT * 0.06,
+    width: Metrics.HEIGHT * 0.06
   },
 
   timerImage: {
@@ -214,7 +215,7 @@ const styles = StyleSheet.create({
 
   notificationContent: {
     marginTop: Metrics.WIDTH * 0.005,
-    marginRight: Metrics.WIDTH * 0.02,
+    marginRight: Metrics.WIDTH * 0.002,
     width: Metrics.WIDTH * 0.78
   },
 

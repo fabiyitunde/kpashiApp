@@ -35,6 +35,9 @@ import styles from "./styles";
 import { Fonts, Metrics, Colors, Images } from "../../Themes/";
 import * as linq from "linq";
 import { connect } from "react-redux";
+import Login from "../login/login";
+import { loggin_authenticated_user } from "../../redux/actions/appStateActions";
+import { getItemFromLocalStorage } from "../../utilities/localstore";
 class MyTables extends Component {
   constructor(props) {
     super(props);
@@ -61,10 +64,22 @@ class MyTables extends Component {
   }
   componentWillMount() {
     var that = this;
+
     BackHandler.addEventListener("hardwareBackPress", function() {
       that.props.navigation.navigate("ECommerceMenu");
       return true;
     });
+    var loginuser = async () => {
+      const auth = await getItemFromLocalStorage("auth");
+      if (auth) {
+        const json = JSON.parse(auth);
+        this.props.loggin_authenticated_user(json.id);
+      }
+    };
+
+    (async () => {
+      await loginuser();
+    })();
   }
 
   _handleNotificationBack() {
@@ -109,7 +124,8 @@ class MyTables extends Component {
   }
 
   render() {
-    StatusBar.setBarStyle("light-content", true);
+    if (!this.props.loggedIn) return <Login />;
+    StatusBar.setBarStyle("dark-content", true);
 
     if (Platform.OS === "android") {
       StatusBar.setBackgroundColor("#0e1130", true);
@@ -136,7 +152,7 @@ class MyTables extends Component {
             </TouchableOpacity>
           </Left>
           <Body style={styles.body}>
-            <Text style={styles.textTitle}>MyTables</Text>
+            <Text style={styles.textTitle}>My Tables</Text>
           </Body>
           <Right style={styles.right}>
             <View style={{ flexDirection: "row" }}>
@@ -191,12 +207,13 @@ class MyTables extends Component {
 function mapStateToProps(state, props) {
   return {
     mytablelist: state.app.mytablelist,
-    invitationlist: state.inv.invitations
+    invitationlist: state.inv.invitations,
+    loggedIn: state.app.loggedIn
   };
 }
 
 //Connect everything
 export default connect(
   mapStateToProps,
-  {}
+  { loggin_authenticated_user }
 )(MyTables);

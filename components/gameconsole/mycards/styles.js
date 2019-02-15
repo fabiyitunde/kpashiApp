@@ -1,5 +1,5 @@
 import { Platform, StyleSheet, Dimensions } from "react-native";
-import { Fonts, Metrics, Colors } from "../../Themes/";
+import { Fonts, Metrics, Colors } from "../../../Themes/";
 
 const styles = StyleSheet.create({
   logosec: {
