@@ -38,16 +38,71 @@ import { connect } from "react-redux";
 import Login from "../login/login";
 import { loggin_authenticated_user } from "../../redux/actions/appStateActions";
 import { getItemFromLocalStorage } from "../../utilities/localstore";
+import { registerForPushNotifications } from "../../utilities/pushNotifications";
+import Drawer from "react-native-drawer";
+import MenuDrawer from "../menudrawer/menudrawer";
+import tweens from "./tweens";
+const drawerStyles = {
+  drawer: {
+    shadowColor: "#000000",
+    shadowOpacity: 0.8,
+    shadowRadius: 0
+  }
+};
 class MyTables extends Component {
   constructor(props) {
     super(props);
-
+    this.state = {
+      drawerType: "static",
+      openDrawerOffset: 50,
+      closedDrawerOffset: 0,
+      panOpenMask: 0.1,
+      relativeDrag: false,
+      panThreshold: 0.25,
+      tweenHandlerOn: false,
+      tweenDuration: 350,
+      tweenEasing: "linear",
+      disabled: false,
+      tweenHandlerPreset: null,
+      acceptDoubleTap: false,
+      acceptTap: false,
+      acceptPan: true,
+      tapToClose: true,
+      negotiatePan: false,
+      side: "left"
+    };
     const rowHasChanged = (r1, r2) => r1 !== r2;
     this.ds = new ListView.DataSource({ rowHasChanged });
 
     // this.state = {
     //   dataSource: ds.cloneWithRows(this.formatData(props.mytablelist))
     // };
+  }
+  setDrawerType(type) {
+    this.setState({
+      drawerType: type
+    });
+  }
+
+  tweenHandler(ratio) {
+    if (!this.state.tweenHandlerPreset) {
+      return {};
+    }
+    return tweens[this.state.tweenHandlerPreset](ratio);
+  }
+
+  noopChange() {
+    this.setState({
+      changeVal: Math.random()
+    });
+  }
+
+  openDrawer() {
+    this.drawer.open();
+  }
+
+  setStateFrag(frag) {
+    this.setState(frag);
   }
   formatData(mytablelist) {
     return linq
@@ -62,11 +117,12 @@ class MyTables extends Component {
       })
       .toArray();
   }
+  componentDidMount() {}
   componentWillMount() {
     var that = this;
 
     BackHandler.addEventListener("hardwareBackPress", function() {
-      that.props.navigation.navigate("ECommerceMenu");
+      that.props.navigation.navigate("MyTables");
       return true;
     });
     var loginuser = async () => {
@@ -74,6 +130,7 @@ class MyTables extends Component {
       if (auth) {
         const json = JSON.parse(auth);
         this.props.loggin_authenticated_user(json.id);
+        await registerForPushNotifications();
       }
     };
 
@@ -120,86 +177,127 @@ class MyTables extends Component {
   }
 
   onBackClick() {
-    this.props.navigation.navigate("ECommerceMenu");
+    //that.props.navigation.navigate("MyTables");
   }
+  handleOpenDrawer = () => {
+    //that.props.navigation.navigate("MyTables");
 
+    this.props.navigation.navigate("DrawerOpen");
+  };
   render() {
+    var that = this;
+
     if (!this.props.loggedIn) return <Login />;
-    StatusBar.setBarStyle("dark-content", true);
+    StatusBar.setBarStyle("light-content", true);
 
     if (Platform.OS === "android") {
-      StatusBar.setBackgroundColor("#0e1130", true);
+      StatusBar.setBackgroundColor("transparent", true);
       StatusBar.setTranslucent(true);
     }
-
+    var controlPanel = (
+      <MenuDrawer
+        closeDrawer={() => {
+          this.drawer.close();
+        }}
+        navigation={this.props.navigation}
+      />
+    );
     var dataSource = this.ds.cloneWithRows(
       this.formatData(this.props.mytablelist)
     );
     return (
-      <Container style={styles.container}>
-        <Header androidStatusBarColor={"#0e1130"} style={styles.header}>
-          <Left style={styles.left}>
-            <TouchableOpacity
-              style={styles.backArrow}
-              onPress={this.onBackClick.bind(this)}
-            >
-              <FontAwesome
-                name={I18nManager.isRTL ? "angle-right" : "angle-left"}
-                size={Fonts.moderateScale(30)}
-                color="white"
-                style={{ paddingRight: 20 }}
-              />
-            </TouchableOpacity>
-          </Left>
-          <Body style={styles.body}>
-            <Text style={styles.textTitle}>My Tables</Text>
-          </Body>
-          <Right style={styles.right}>
-            <View style={{ flexDirection: "row" }}>
-              <TouchableOpacity
-                style={{ flexDirection: "row" }}
-                onPress={() => this._handleOpenPendingInvitationNavigation()}
-              >
-                <View style={styles.heartBg}>
+      <View style={styles.container}>
+        <Drawer
+          ref={c => (this.drawer = c)}
+          type={this.state.drawerType}
+          animation={this.state.animation}
+          openDrawerOffset={this.state.openDrawerOffset}
+          closedDrawerOffset={this.state.closedDrawerOffset}
+          panOpenMask={this.state.panOpenMask}
+          panCloseMask={this.state.panCloseMask}
+          relativeDrag={this.state.relativeDrag}
+          panThreshold={this.state.panThreshold}
+          content={controlPanel}
+          styles={drawerStyles}
+          disabled={this.state.disabled}
+          tweenHandler={this.tweenHandler.bind(this)}
+          tweenDuration={this.state.tweenDuration}
+          tweenEasing={this.state.tweenEasing}
+          acceptDoubleTap={this.state.acceptDoubleTap}
+          acceptTap={this.state.acceptTap}
+          acceptPan={this.state.acceptPan}
+          tapToClose={this.state.tapToClose}
+          negotiatePan={this.state.negotiatePan}
+          changeVal={this.state.changeVal}
+          side={this.state.side}
+        >
+          <View style={styles.drawercontainer}>
+            <Header style={styles.header}>
+              <Left>
+                <TouchableOpacity onPress={() => this.openDrawer()}>
                   <FontAwesome
-                    name="heart"
-                    size={Fonts.moderateScale(8)}
+                    name="bars"
+                    size={Fonts.moderateScale(18)}
                     style={styles.heartIcon}
                   />
+                </TouchableOpacity>
+              </Left>
+              <Body style={styles.body}>
+                <Text style={styles.textTitle}>My Tables</Text>
+              </Body>
+              <Right style={styles.right}>
+                <View style={{ flexDirection: "row" }}>
+                  <TouchableOpacity
+                    style={{ flexDirection: "row" }}
+                    onPress={() =>
+                      this._handleOpenPendingInvitationNavigation()
+                    }
+                  >
+                    <View style={styles.heartBg}>
+                      <FontAwesome
+                        name="heart"
+                        size={Fonts.moderateScale(8)}
+                        style={styles.heartIcon}
+                      />
+                    </View>
+                    <View style={styles.alertBg}>
+                      <Text style={styles.alertTxt}>
+                        {this.props.invitationlist.length}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={{ flexDirection: "row" }}
+                    onPress={() => this._handleBagNavigation()}
+                  >
+                    <SimpleLineIcons
+                      name="handbag"
+                      size={Fonts.moderateScale(18)}
+                      style={styles.bagIcon}
+                    />
+                    <View style={styles.alertBg}>
+                      <Text style={styles.alertTxt}>3</Text>
+                    </View>
+                  </TouchableOpacity>
                 </View>
-                <View style={styles.alertBg}>
-                  <Text style={styles.alertTxt}>
-                    {this.props.invitationlist.length}
-                  </Text>
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{ flexDirection: "row" }}
-                onPress={() => this._handleBagNavigation()}
-              >
-                <SimpleLineIcons
-                  name="handbag"
-                  size={Fonts.moderateScale(18)}
-                  style={styles.bagIcon}
+              </Right>
+            </Header>
+
+            <Content>
+              <ScrollView>
+                <ListView
+                  contentContainerStyle={styles.content}
+                  dataSource={dataSource}
+                  renderRow={this._renderItem.bind(this)}
+                  enableEmptySections
+                  scrollEnabled={false}
+                  pageSize={4}
                 />
-                <View style={styles.alertBg}>
-                  <Text style={styles.alertTxt}>3</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-          </Right>
-        </Header>
-        <ScrollView>
-          <ListView
-            contentContainerStyle={styles.content}
-            dataSource={dataSource}
-            renderRow={this._renderItem.bind(this)}
-            enableEmptySections
-            scrollEnabled={false}
-            pageSize={4}
-          />
-        </ScrollView>
-      </Container>
+              </ScrollView>
+            </Content>
+          </View>
+        </Drawer>
+      </View>
     );
   }
 }

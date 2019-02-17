@@ -2,7 +2,10 @@ import React from "react";
 import { Platform } from "react-native";
 import {
   createStackNavigator,
-  createBottomTabNavigator
+  createBottomTabNavigator,
+  createDrawerNavigator,
+  DrawerNavigator,
+  StackNavigator
 } from "react-navigation";
 
 import TabBarIcon from "../components/TabBarIcon";
@@ -17,56 +20,41 @@ import InvitationResponse from "../components/invitationresponse/invitationrespo
 import DataEntry from "../components/invitationresponse/dataentry/dataentry";
 import GameConsole from "../components/gameconsole/gameconsole";
 import LoadCredit from "../components/loadcredit/loadcredit";
-const HomeStack = createStackNavigator({
-  Home: MyTables,
-  TableView: TableView,
-  InvitationList: InvitationList,
-  InvitationResponse: InvitationResponse,
-  DataEntry: DataEntry,
-  GameConsole: GameConsole,
-  LoadCredit: LoadCredit
-});
+import MenuDrawer from "../components/menudrawer/menudrawer";
+const kpashiDrawerStack = createDrawerNavigator(
+  {
+    Home: { screen: MyTables },
+    TableView: { screen: TableView },
+    InvitationList: { screen: InvitationList },
+    InvitationResponse: { screen: InvitationResponse },
+    DataEntry: { screen: DataEntry },
+    GameConsole: { screen: GameConsole },
+    LoadCredit: { screen: LoadCredit }
+  },
+  {
+    gesturesEnabled: false,
+    contentComponent: MenuDrawer
+  }
+);
+const DrawerNavigationkpashi = createStackNavigator(
+  {
+    kpashiDrawerStack: { screen: kpashiDrawerStack }
+  },
+  {
+    headerMode: "none",
+    navigationOptions: ({ navigation }) => ({
+      gesturesEnabled: false
+    })
+  }
+);
+const PrimaryNav = createStackNavigator(
+  {
+    DrawerNavigationkpashi: { screen: DrawerNavigationkpashi }
+  },
+  {
+    headerMode: "none",
+    gesturesEnabled: false
+  }
+);
 
-HomeStack.navigationOptions = {
-  tabBarLabel: "Home",
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={
-        Platform.OS === "ios"
-          ? `ios-information-circle${focused ? "" : "-outline"}`
-          : "md-information-circle"
-      }
-    />
-  )
-};
-
-const LinksStack = createStackNavigator({
-  Links: LinksScreen
-});
-
-LinksStack.navigationOptions = {
-  tabBarLabel: "Links",
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === "ios" ? "ios-link" : "md-link"}
-    />
-  )
-};
-
-const SettingsStack = createStackNavigator({
-  Settings: SettingsScreen
-});
-
-SettingsStack.navigationOptions = {
-  tabBarLabel: "Settings",
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === "ios" ? "ios-options" : "md-options"}
-    />
-  )
-};
-
-export default HomeStack;
+export default PrimaryNav;

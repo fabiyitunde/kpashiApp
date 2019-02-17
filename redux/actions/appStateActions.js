@@ -17,7 +17,8 @@ export const loggin_authenticated_user = userid => dispatch => {
         payload: {
           mytablelist: data.mytablelist,
           playerlist: data.playerlist,
-          userid: userid
+          userid: userid,
+          playerinfo: data.playerinfo
         }
       });
       listenForUserEvents(userid, dispatch);
@@ -75,13 +76,44 @@ export const loadtoken = (
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data)
   })
-    .then(resp => resp.json())
+    .then(resp => {
+      if (!resp.ok) throw resp;
+      return resp.json();
+    })
     .then(data => {
       dispatch({
         type: clientTriggeredActions.creditLoaded,
         payload: data.tableinfo
       });
       successcalback();
+    })
+    .catch(error => {
+      error.text().then(errorMessage => {
+        Alert.alert("Error", errorMessage);
+      });
+    });
+};
+export const removePlayerFromTable = (
+  playertoremoveId,
+  hostplayerid,
+  tableid
+) => dispatch => {
+  const data = { playertoremoveId, hostplayerid, tableid };
+  fetch(`${globalParams.baseurl}/registration/removePlayerFromTable`, {
+    method: "POST",
+    mode: "cors",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  })
+    .then(resp => {
+      if (!resp.ok) throw resp;
+      return resp.json();
+    })
+    .then(data => {
+      dispatch({
+        type: clientTriggeredActions.playerRemovedFromTable_ClienSide,
+        payload: data
+      });
     })
     .catch(error => {
       error.text().then(errorMessage => {

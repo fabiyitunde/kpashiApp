@@ -28,6 +28,7 @@ import Images from "../../Themes/Images";
 const { width, height } = Dimensions.get("window");
 import { View } from "react-native-animatable";
 import * as linq from "linq";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 /**
  *  Profile Screen
  */
@@ -49,6 +50,7 @@ export default class Tablist extends Component {
   }
 
   _renderRow(rowData) {
+    const { onRemovePlayer } = this.props;
     return (
       <View>
         <View style={styles.rowMain}>
@@ -80,6 +82,9 @@ export default class Tablist extends Component {
                 </Text>
               </TouchableOpacity>
             </View>
+            <TouchableOpacity onPress={() => onRemovePlayer(rowData.id)}>
+              <FontAwesome name="user-times" size={30} />
+            </TouchableOpacity>
           </View>
         </View>
         <View style={styles.listDivider} />

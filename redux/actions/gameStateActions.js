@@ -163,3 +163,27 @@ export const dropCard = (gameid, userid, suittype, cardtype) => dispatch => {
       });
     });
 };
+export const cancelCurrentGame = (userid, tableid) => dispatch => {
+  const data = { tableid, userid };
+  fetch(`${globalParams.baseurl}/game/cancelCurrentGame`, {
+    method: "POST",
+    mode: "cors",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  })
+    .then(resp => {
+      if (!resp.ok) throw resp;
+      return resp.json();
+    })
+    .then(data => {
+      dispatch({
+        type: clientTriggeredActions.currentGameCancelled,
+        payload: data
+      });
+    })
+    .catch(error => {
+      error.text().then(errorMessage => {
+        Alert.alert("Error", errorMessage);
+      });
+    });
+};

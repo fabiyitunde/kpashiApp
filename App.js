@@ -8,8 +8,7 @@ import {
   YellowBox
 } from "react-native";
 import { AppLoading, Asset, Font, Icon } from "expo";
-import AppNavigator from "./navigation/AppNavigator";
-import Home from "./components/home/home";
+import Router from "./navigation/AppNavigator";
 import { Provider } from "react-redux";
 import store from "./redux/store"; //Import the store
 export default class App extends React.Component {
@@ -35,7 +34,7 @@ export default class App extends React.Component {
     } else {
       return (
         <Provider store={store}>
-          <AppNavigator />
+          <Router />
         </Provider>
       );
     }
@@ -58,6 +57,7 @@ export default class App extends React.Component {
         "SFUIDisplay-Semibold": require("./assets/fonts/SF-UI-Display-Semibold.ttf"),
         "HelveticaNeue-Light": require("./assets/fonts/HelveticaNeue-Light.ttf"),
         "SFUIDisplay-Medium": require("./assets/fonts/SF-UI-Display-Medium.ttf"),
+        "SFUIDisplay-Light": require("./assets/fonts/SFUIDisplay-Light.ttf"),
         Roboto_medium: require("./assets/fonts/Roboto-Medium.ttf"),
         "SFUIDisplay-Bold": require("./assets/fonts/SFUIDisplay-Bold.ttf"),
         "Avenir-Black": require("./assets/fonts/Avenir-Black.ttf")

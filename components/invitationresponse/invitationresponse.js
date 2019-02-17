@@ -78,6 +78,7 @@ class InvitationResponse extends Component {
       StatusBar.setBackgroundColor("#2d324f", true);
       StatusBar.setTranslucent(true);
     }
+    this.tableid = this.props.navigation.getParam("tableid", "");
     const { invitations } = this.props;
     var tableinfo = invitations.find(a => a.id == this.tableid);
     var that = this;

@@ -37,7 +37,11 @@ import { connect } from "react-redux";
 import PlayerList from "../playerlist/playerlist";
 import { globalParams } from "../../params";
 import { getItemFromLocalStorageSync } from "../../utilities/localstore";
-import { loadGame } from "../../redux/actions/gameStateActions";
+import {
+  loadGame,
+  cancelCurrentGame
+} from "../../redux/actions/gameStateActions";
+import { removePlayerFromTable } from "../../redux/actions/appStateActions";
 const bgImage =
   "https://antiqueruby.aliansoftware.net//Images/profile/background_p30.png";
 
@@ -45,7 +49,6 @@ const initialLayout = {
   height: 0,
   width: Dimensions.get("window").width
 };
-
 const NewsRoute = () => (
   <View style={[styles.container, { backgroundColor: "transparent" }]}>
     <TabList />
@@ -119,10 +122,43 @@ class TableView extends Component {
       </View>
     );
   };
-
+  handleCancelCurrentGame = () => {
+    const { userid, cancelCurrentGame } = this.props;
+    Alert.alert(
+      "Game Cancellation",
+      "Are You Sure Of This Move",
+      [
+        {
+          text: "Yes I Am",
+          onPress: () => cancelCurrentGame(userid, this.tableid)
+        },
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        }
+      ],
+      { cancelable: false }
+    );
+  };
+  renderCancellGameButton = () => {
+    const { gamelist } = this.props;
+    const currentgame = gamelist.find(a => a.tableid == this.tableid);
+    if (currentgame == null) return null;
+    if (currentgame.gamestatusdetail.description != "Started") return null;
+    return (
+      <TouchableOpacity
+        onPress={() => this.handleCancelCurrentGame()}
+        style={styles.commentBg}
+      >
+        <FontAwesome name="bell-slash" size={20} color="white" />
+      </TouchableOpacity>
+    );
+  };
   _handleIndexChange = index => this.setState({ index });
   handleLoadGame = async () => {
     var authdata = JSON.parse(await getItemFromLocalStorageSync("auth"));
+
     this.props.loadGame(this.tableid, authdata.id, () => {
       this.props.navigation.navigate("GameConsole", {
         tableid: this.tableid
@@ -152,7 +188,25 @@ class TableView extends Component {
       return true;
     });
   }
-
+  handleonRemovePlayer = playerid => {
+    const { userid, removePlayerFromTable } = this.props;
+    Alert.alert(
+      "Player Removal",
+      "Are You Sure You Want To CheckOut This Player",
+      [
+        {
+          text: "Yes I Am",
+          onPress: () => removePlayerFromTable(playerid, userid, this.tableid)
+        },
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        }
+      ],
+      { cancelable: false }
+    );
+  };
   render() {
     StatusBar.setBarStyle("light-content");
     if (Platform.OS === "android") {
@@ -160,7 +214,9 @@ class TableView extends Component {
       StatusBar.setBackgroundColor("rgba(0, 0, 0, 0.2)", true);
     }
     const { mytablelist } = this.props;
+    this.tableid = this.props.navigation.getParam("tableid", "");
     var tableinfo = mytablelist.find(a => a.id == this.tableid);
+    if (tableinfo == null) return null;
     var members = tableinfo.members;
     return (
       <View style={styles.main}>
@@ -190,7 +246,7 @@ class TableView extends Component {
               <Left style={styles.left}>
                 <TouchableOpacity
                   style={styles.backArrow}
-                  onPress={() => this.props.navigation.navigate("Profile")}
+                  onPress={() => this.props.navigation.navigate("Home")}
                 >
                   <Icon
                     name={
@@ -203,6 +259,7 @@ class TableView extends Component {
 
               <Body style={styles.body}>
                 <Title style={styles.headerTxt}>{tableinfo.description}</Title>
+                <Text style={styles.labelTxt}> {tableinfo.hostname}</Text>
               </Body>
 
               <Right style={styles.right}>
@@ -245,6 +302,7 @@ class TableView extends Component {
               >
                 <Ionicons name="ios-call" size={27} color="white" />
               </TouchableOpacity>
+              {this.renderCancellGameButton()}
             </View>
 
             <View style={styles.followerFollowingDetailsBg}>
@@ -272,7 +330,10 @@ class TableView extends Component {
         </ImageBackground>
 
         <View style={styles.bottomContent}>
-          <TabList members={members} />
+          <TabList
+            members={members}
+            onRemovePlayer={this.handleonRemovePlayer}
+          />
         </View>
       </View>
     );
@@ -281,12 +342,14 @@ class TableView extends Component {
 
 function mapStateToProps(state, props) {
   return {
-    mytablelist: state.app.mytablelist
+    mytablelist: state.app.mytablelist,
+    gamelist: state.game.gamelist,
+    userid: state.app.userid
   };
 }
 
 //Connect everything
 export default connect(
   mapStateToProps,
-  { loadGame }
+  { loadGame, cancelCurrentGame, removePlayerFromTable }
 )(TableView);

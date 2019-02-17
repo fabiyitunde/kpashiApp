@@ -38,6 +38,18 @@ export default function(state = initialState, action) {
         ...state,
         mytablelist: copyoflist
       };
+    case clientTriggeredActions.currentGameCancelled:
+      var copyoflist = [...state.mytablelist];
+      var existinrec = copyoflist.find(
+        a => a.id == action.payload.tableinfo.id
+      );
+      var index = copyoflist.indexOf(existinrec);
+      copyoflist[index] = action.payload.tableinfo;
+      return {
+        ...state,
+        mytablelist: copyoflist
+      };
+    case clientTriggeredActions.playerRemovedFromTable_ClienSide:
     case clientTriggeredActions.iAmReadyToPlay:
       var copyoflist = [...state.mytablelist];
       var existinrec = copyoflist.find(
@@ -50,7 +62,6 @@ export default function(state = initialState, action) {
         mytablelist: copyoflist
       };
     case clientTriggeredActions.gameLoaded:
-      console.log("Client..App", action);
       if (action.tableinfo != null && action.tableinfo != undefined) {
         var copyoflist = [...state.mytablelist];
         var existinrec = copyoflist.find(a => a.id == action.tableinfo.id);
@@ -63,8 +74,9 @@ export default function(state = initialState, action) {
       } else {
         return state;
       }
+
+    case serverTriggeredActions.currentGameCancelled:
     case serverTriggeredActions.gameViewOpened:
-      console.log("Server..App", action);
       if (
         action.eventdata.tableinfo != null &&
         action.eventdata.tableinfo != undefined
@@ -73,6 +85,7 @@ export default function(state = initialState, action) {
         var existinrec = copyoflist.find(
           a => a.id == action.eventdata.tableinfo.id
         );
+        if (existinrec == null) return state;
         var index = copyoflist.indexOf(existinrec);
         copyoflist[index] = action.eventdata.tableinfo;
         return {
@@ -82,6 +95,15 @@ export default function(state = initialState, action) {
       } else {
         return state;
       }
+    case serverTriggeredActions.playerRemovedFromTable:
+      var copyoflist = [...state.mytablelist];
+      var newlist = copyoflist.filter(
+        a => a.id != action.eventdata.payload.tableinfo.id
+      );
+      return {
+        ...state,
+        mytablelist: newlist
+      };
     case serverTriggeredActions.tableinviteResponse:
       var copyoflist = [...state.mytablelist];
       var existinrec = copyoflist.find(

@@ -8,7 +8,6 @@ const initialState = {
 export default function(state = initialState, action) {
   switch (action.type) {
     case clientTriggeredActions.gameLoaded:
-      console.log("Client..Game", action);
       playSound("dropcard.wav");
       var copyoflist = [...state.gamelist];
       var existinrec = copyoflist.find(
@@ -24,6 +23,7 @@ export default function(state = initialState, action) {
         ...state,
         gamelist: copyoflist
       };
+    case clientTriggeredActions.currentGameCancelled:
     case clientTriggeredActions.iAmReadyToPlay:
       var copyoflist = [...state.gamelist];
       var existinrec = copyoflist.find(
@@ -39,8 +39,8 @@ export default function(state = initialState, action) {
         ...state,
         gamelist: copyoflist
       };
+    case serverTriggeredActions.currentGameCancelled:
     case serverTriggeredActions.gameViewOpened:
-      console.log("Server..Game", action);
       var copyoflist = [...state.gamelist];
       var existinrec = copyoflist.find(
         a => a.tableid == action.eventdata.payload.tableid

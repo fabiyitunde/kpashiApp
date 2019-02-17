@@ -46,13 +46,13 @@ class LoadCredit extends Component {
   }
 
   onBackClick() {
-    this.props.navigation.navigate("ECommerceMyAccount");
+    this.props.navigation.navigate("TableView", { tableid: this.tableid });
   }
 
   componentWillMount() {
     var that = this;
     BackHandler.addEventListener("hardwareBackPress", function() {
-      this.props.navigation.navigate("TableView", { tableid: this.tableid });
+      this.onBackClick();
       return true;
     });
   }
@@ -91,6 +91,7 @@ class LoadCredit extends Component {
       StatusBar.setBackgroundColor("#0e1130", true);
       StatusBar.setTranslucent(true);
     }
+    this.tableid = this.props.navigation.getParam("tableid", "");
     const { mytablelist, userid } = this.props;
     const tableinfo = mytablelist.find(a => a.id == this.tableid);
     const creditbalance = this.getCurrentCreditBalance(userid, tableinfo);

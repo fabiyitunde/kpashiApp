@@ -3,9 +3,8 @@ import { Fonts, Metrics, Colors } from "../../Themes/";
 
 const styles = StyleSheet.create({
   container: {
-    height: Metrics.HEIGHT,
-    width: Metrics.WIDTH,
-    backgroundColor: Colors.snow
+    flex: 1,
+    backgroundColor: "#C5B9C9"
   },
 
   header: {
@@ -148,6 +147,11 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.type.helveticaNeueLight,
     fontSize: Fonts.moderateScale(12),
     backgroundColor: "transparent"
+  },
+  drawercontainer: {
+    width: Metrics.WIDTH,
+    height: Metrics.HEIGHT,
+    backgroundColor: "#2d324f"
   }
 });
 export default styles;

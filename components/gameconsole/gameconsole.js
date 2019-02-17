@@ -72,7 +72,10 @@ class GameConsole extends Component {
       this.props.dealcards(gamedetails.id, authdata.id);
     }
 
-    if (gamedetails.gamestatusdetail.description == "Finished") {
+    if (
+      gamedetails.gamestatusdetail.description == "Finished" ||
+      gamedetails.gamestatusdetail.description == "Cancelled"
+    ) {
       if (gamedetails.readytoplay == "true") {
         this.props.startNewGame(authdata.id, gamedetails.tableid);
       } else {
@@ -109,7 +112,10 @@ class GameConsole extends Component {
     if (gamedetails.gamestatusdetail.description == "Started") {
       buttondescription = "";
     }
-    if (gamedetails.gamestatusdetail.description == "Finished") {
+    if (
+      gamedetails.gamestatusdetail.description == "Finished" ||
+      gamedetails.gamestatusdetail.description == "Cancelled"
+    ) {
       if (gamedetails.readytoplay == "true") {
         buttondescription = "New Game";
       } else {
@@ -137,7 +143,11 @@ class GameConsole extends Component {
     );
   }
   renderMyCards = gamedetails => {
-    if (gamedetails.gamestatusdetail.description == "Finished") return null;
+    if (
+      gamedetails.gamestatusdetail.description == "Finished" ||
+      gamedetails.gamestatusdetail.description == "Cancelled"
+    )
+      return null;
     return (
       <MyCards
         onCardSelected={this.handleonCardSelected}
@@ -161,6 +171,7 @@ class GameConsole extends Component {
       StatusBar.setBackgroundColor("transparent", true);
       StatusBar.setTranslucent(true);
     }
+    this.tableid = this.props.navigation.getParam("tableid", "");
     var currentgame = this.props.gamelist.find(a => a.tableid == this.tableid);
     return (
       <Container style={{ backgroundColor: "#2d324f" }}>
@@ -169,7 +180,11 @@ class GameConsole extends Component {
           <Left style={styles.left}>
             <TouchableOpacity
               style={styles.backArrow}
-              onPress={() => this.props.navigation.navigate("Profile")}
+              onPress={() =>
+                this.props.navigation.navigate("TableView", {
+                  tableid: this.tableid
+                })
+              }
             >
               <Icon
                 name={
