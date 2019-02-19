@@ -33,12 +33,13 @@ import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 
 import styles from "./styles";
 import { Fonts, Metrics, Colors, Images } from "../../Themes/";
-import * as linq from "linq";
+
 import { connect } from "react-redux";
 import Login from "../login/login";
 import { loggin_authenticated_user } from "../../redux/actions/appStateActions";
 import { getItemFromLocalStorage } from "../../utilities/localstore";
 import { registerForPushNotifications } from "../../utilities/pushNotifications";
+import { startListeningForIncomingMessages } from "../../redux/actions/chatActions";
 import Drawer from "react-native-drawer";
 import MenuDrawer from "../menudrawer/menudrawer";
 import tweens from "./tweens";
@@ -105,17 +106,14 @@ class MyTables extends Component {
     this.setState(frag);
   }
   formatData(mytablelist) {
-    return linq
-      .from(mytablelist)
-      .select(a => {
-        return {
-          id: a.id,
-          title: a.description,
-          itemImg: { uri: a.hostphotourl },
-          notification: a.members.length
-        };
-      })
-      .toArray();
+    return mytablelist.map(a => {
+      return {
+        id: a.id,
+        title: a.description,
+        itemImg: { uri: a.hostphotourl },
+        notification: a.members.length
+      };
+    });
   }
   componentDidMount() {}
   componentWillMount() {
@@ -136,6 +134,8 @@ class MyTables extends Component {
 
     (async () => {
       await loginuser();
+      const { mytablelist, startListeningForIncomingMessages } = this.props;
+      startListeningForIncomingMessages(mytablelist);
     })();
   }
 
@@ -313,5 +313,5 @@ function mapStateToProps(state, props) {
 //Connect everything
 export default connect(
   mapStateToProps,
-  { loggin_authenticated_user }
+  { loggin_authenticated_user, startListeningForIncomingMessages }
 )(MyTables);

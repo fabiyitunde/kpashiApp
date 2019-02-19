@@ -6,6 +6,9 @@ const styles = StyleSheet.create({
     width: Metrics.WIDTH,
     height: Metrics.HEIGHT
   },
+  overlaymain: {
+    width: Metrics.WIDTH * 0.7
+  },
   backArrow: {
     width: 30,
     justifyContent: "center",

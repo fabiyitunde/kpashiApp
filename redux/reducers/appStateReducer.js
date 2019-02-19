@@ -97,9 +97,21 @@ export default function(state = initialState, action) {
       }
     case serverTriggeredActions.playerRemovedFromTable:
       var copyoflist = [...state.mytablelist];
-      var newlist = copyoflist.filter(
-        a => a.id != action.eventdata.payload.tableinfo.id
-      );
+      const hostplayerid = action.eventdata.payload.hostplayerinfo.id;
+      var newlist = [];
+      if (hostplayerid == state.userid) {
+        var existinrec = copyoflist.find(
+          a => a.id == action.eventdata.payload.tableinfo.id
+        );
+        var index = copyoflist.indexOf(existinrec);
+        copyoflist[index] = action.eventdata.payload.tableinfo;
+        newlist = copyoflist;
+      } else {
+        newlist = copyoflist.filter(
+          a => a.id != action.eventdata.payload.tableinfo.id
+        );
+      }
+
       return {
         ...state,
         mytablelist: newlist

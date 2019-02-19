@@ -7,7 +7,8 @@ export const serverTriggeredActions = {
   tableinviteResponse: "tableinviteResponse",
   gameViewOpened: "gameViewOpened",
   currentGameCancelled: "currentGameCancelled",
-  playerRemovedFromTable: "playerRemovedFromTable"
+  playerRemovedFromTable: "playerRemovedFromTable",
+  messageRecieved: "messageRecieved"
 };
 export const clientTriggeredActions = {
   pendingInvitationTreated: "pendingInvitationTreated",
@@ -16,5 +17,8 @@ export const clientTriggeredActions = {
   iAmReadyToPlay: "iAmReadyToPlay",
   creditLoaded: "creditLoaded",
   currentGameCancelled: "currentGameCancelledByClient",
-  playerRemovedFromTable_ClienSide: "playerRemovedFromTable_ClienSide"
+  playerRemovedFromTable_ClienSide: "playerRemovedFromTable_ClienSide",
+  messageSent: "messageSent",
+  openChatOverlay: "openChatOverlay",
+  closeChatOverlay: "closeChatOverlay"
 };

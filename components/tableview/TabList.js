@@ -117,6 +117,7 @@ export default class Tablist extends Component {
             dataSource={dataSource}
             renderRow={this._renderRow.bind(this)}
             scrollEnabled={true}
+            enableEmptySections
           />
         </Content>
       </Container>

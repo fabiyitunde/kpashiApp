@@ -42,6 +42,12 @@ import {
   cancelCurrentGame
 } from "../../redux/actions/gameStateActions";
 import { removePlayerFromTable } from "../../redux/actions/appStateActions";
+import { Overlay } from "react-native-elements";
+import Messaging from "../messaging/messaging";
+import {
+  openChatOverLayForTable,
+  closeChatOverLayForTable
+} from "../../redux/actions/chatActions";
 const bgImage =
   "https://antiqueruby.aliansoftware.net//Images/profile/background_p30.png";
 
@@ -207,6 +213,13 @@ class TableView extends Component {
       { cancelable: false }
     );
   };
+  getChatOverlayVisibility = () => {
+    const { chatoverlaylist } = this.props;
+    var isVisible = false;
+    var tableoverlayrec = chatoverlaylist.find(a => a.tableid == this.tableid);
+    if (tableoverlayrec) isVisible = tableoverlayrec.show;
+    return isVisible;
+  };
   render() {
     StatusBar.setBarStyle("light-content");
     if (Platform.OS === "android") {
@@ -214,12 +227,30 @@ class TableView extends Component {
       StatusBar.setBackgroundColor("rgba(0, 0, 0, 0.2)", true);
     }
     const { mytablelist } = this.props;
+
     this.tableid = this.props.navigation.getParam("tableid", "");
     var tableinfo = mytablelist.find(a => a.id == this.tableid);
     if (tableinfo == null) return null;
     var members = tableinfo.members;
     return (
       <View style={styles.main}>
+        <Overlay
+          style={styles.overlaymain}
+          isVisible={this.getChatOverlayVisibility()}
+          onBackdropPress={() =>
+            this.props.closeChatOverLayForTable(this.tableid)
+          }
+        >
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "column",
+              justifyContent: "center"
+            }}
+          >
+            <Messaging tableid={this.tableid} />
+          </View>
+        </Overlay>
         <Modal
           animationType="slide"
           transparent={false}
@@ -294,6 +325,12 @@ class TableView extends Component {
                 }
                 style={styles.commentBg}
               >
+                <FontAwesome name="plus" size={20} color="white" />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => this.props.openChatOverLayForTable(this.tableid)}
+                style={styles.commentBg}
+              >
                 <FontAwesome name="comment" size={20} color="white" />
               </TouchableOpacity>
               <TouchableOpacity
@@ -344,12 +381,19 @@ function mapStateToProps(state, props) {
   return {
     mytablelist: state.app.mytablelist,
     gamelist: state.game.gamelist,
-    userid: state.app.userid
+    userid: state.app.userid,
+    chatoverlaylist: state.chat.chatoverlaylist
   };
 }
 
 //Connect everything
 export default connect(
   mapStateToProps,
-  { loadGame, cancelCurrentGame, removePlayerFromTable }
+  {
+    loadGame,
+    cancelCurrentGame,
+    removePlayerFromTable,
+    openChatOverLayForTable,
+    closeChatOverLayForTable
+  }
 )(TableView);
