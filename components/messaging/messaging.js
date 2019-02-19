@@ -102,18 +102,6 @@ class Messaging extends Component {
       <Container style={styles.main}>
         <Header style={styles.header}>
           {/* Take up the space */}
-          <Left style={styles.left}>
-            <TouchableOpacity
-              style={styles.backArrow}
-              onPress={() => that.props.navigation.navigate("Social")}
-            >
-              {I18nManager.isRTL ? (
-                <Icon name="ios-arrow-forward" style={styles.backArrow} />
-              ) : (
-                <Icon name="ios-arrow-back" style={styles.backArrow} />
-              )}
-            </TouchableOpacity>
-          </Left>
 
           {/* Title */}
           <Body style={styles.body}>
