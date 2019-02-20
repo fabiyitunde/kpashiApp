@@ -90,7 +90,7 @@ class InvitationList extends Component {
                     })
                   }
                 >
-                  <FontAwesome name="heart" size={15} color="#d4d4d4" />
+                  <FontAwesome name="check-circle-o" size={35} color="green" />
                 </TouchableOpacity>
                 <Text style={styles.textStyle}>{rowData.likes}</Text>
               </View>

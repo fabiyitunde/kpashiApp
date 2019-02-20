@@ -352,7 +352,9 @@ class TableView extends Component {
               </View>
               <View style={styles.countLabelBg}>
                 <View style={styles.followerFollowingBg}>
-                  <Text style={styles.countTxt}>{tableinfo.isOn}</Text>
+                  <Text style={styles.countTxt}>
+                    {tableinfo.isOn ? "True" : "False"}
+                  </Text>
                   <Text style={styles.labelTxt}>Game On</Text>
                 </View>
                 <View style={styles.divider} />

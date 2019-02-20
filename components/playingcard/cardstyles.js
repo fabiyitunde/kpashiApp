@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.transparent,
     textAlign: "center",
     alignSelf: "center",
-    fontSize: Fonts.moderateScale(30),
+    fontSize: Fonts.moderateScale(25),
     width: Metrics.WIDTH * 0.85,
     color: Colors.black,
     marginTop: Metrics.HEIGHT * 0.01
@@ -72,8 +72,8 @@ const styles = StyleSheet.create({
   dataStyle: {
     backgroundColor: Colors.snow,
     borderRadius: 4,
-    height: Metrics.HEIGHT * 0.17,
-    width: Metrics.WIDTH * 0.26,
+    height: Metrics.HEIGHT * 0.15,
+    width: Metrics.WIDTH * 0.2,
     margin: Metrics.WIDTH * 0.015,
     elevation: 5,
     shadowColor: Colors.black,

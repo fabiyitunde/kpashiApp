@@ -9,7 +9,11 @@ const styles = StyleSheet.create({
     flexDirection: "row"
   },
   imgs: {
-    paddingRight: Metrics.WIDTH * 0.005
+    paddingRight: 0
+  },
+  callcard: {
+    borderColor: "blue",
+    borderWidth: 2
   },
   backbtn: {
     width: 30
@@ -156,7 +160,8 @@ const styles = StyleSheet.create({
 
   listContainer: {
     backgroundColor: "white",
-    marginLeft: Metrics.WIDTH * 0.015
+    marginLeft: Metrics.WIDTH * 0.015,
+    flex: 1
   },
 
   postImageContent: {
@@ -215,8 +220,9 @@ const styles = StyleSheet.create({
 
   notificationContent: {
     marginTop: Metrics.WIDTH * 0.005,
-    marginRight: Metrics.WIDTH * 0.002,
-    width: Metrics.WIDTH * 0.78
+    width: Metrics.WIDTH,
+    flex: 1,
+    flexDirection: "row"
   },
 
   titleBar: {
@@ -253,9 +259,9 @@ const styles = StyleSheet.create({
   },
 
   textStyle: {
-    fontFamily: Fonts.type.SFUIDisplayRegular,
+    fontFamily: Fonts.type.sfuiDisplayBold,
     fontSize: 15,
-    color: "#6f6f6f"
+    color: "blue"
   },
 
   separatorStyle: {

@@ -65,47 +65,40 @@ export default class DroppedCards extends Component {
                 {item.gameStatus == "" ? null : (
                   <Text style={styles.name}>{item.gameStatus}</Text>
                 )}
+                {item.cards == null ? null : (
+                  <View style={styles.bottombar}>
+                    <View style={styles.likeContent}>
+                      <Text style={styles.textStyle}>{item.score}</Text>
+                    </View>
+                  </View>
+                )}
               </View>
               <View style={styles.notificationContent}>
                 {item.dropedcard == null ? null : (
-                  <PlayingCard
-                    suittype={item.dropedcard.suittype}
-                    cardtype={item.dropedcard.cardtype}
-                    style={styles.postedImage}
-                  />
+                  <View style={styles.callcard}>
+                    <PlayingCard
+                      suittype={item.dropedcard.suittype}
+                      cardtype={item.dropedcard.cardtype}
+                    />
+                  </View>
                 )}
 
                 {item.cards == null ? null : (
                   <ScrollView
                     horizontal={true}
                     showsHorizontalScrollIndicator={true}
-                    style={styles.postImageContent}
+                    style={{ flex: 1 }}
                   >
                     {item.cards.map((card, index) => {
                       return (
-                        <View key={index}>
-                          <PlayingCard
-                            suittype={card.suittype}
-                            cardtype={card.cardtype}
-                            style={styles.postedImage}
-                          />
-                        </View>
+                        <PlayingCard
+                          key={index}
+                          suittype={card.suittype}
+                          cardtype={card.cardtype}
+                        />
                       );
                     })}
                   </ScrollView>
-                )}
-                {item.cards == null ? null : (
-                  <View style={styles.bottombar}>
-                    <View style={styles.likeContent}>
-                      <FontAwesome
-                        name="heart"
-                        size={15}
-                        color="#d4d4d4"
-                        style={styles.hearticon}
-                      />
-                      <Text style={styles.textStyle}>{item.score}</Text>
-                    </View>
-                  </View>
                 )}
               </View>
               <View style={styles.separatorStyle} />

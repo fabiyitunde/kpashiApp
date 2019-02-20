@@ -12,8 +12,33 @@ import {
   BackHandler
 } from "react-native";
 import styles from "./cardstyles";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 class PlayingCard extends React.Component {
   state = {};
+  resolveimageForcard(suittype) {
+    var fontname = "";
+    var fontcolour = "";
+    if (suittype == 0) {
+      fontname = "cards-spade";
+      fontcolour = "black";
+    }
+    if (suittype == 1) {
+      fontname = "cards-heart";
+      fontcolour = "red";
+    }
+    if (suittype == 2) {
+      fontname = "cards-diamond";
+      fontcolour = "red";
+    }
+    if (suittype == 3) {
+      fontname = "cards-club";
+      fontcolour = "black";
+    }
+    return (
+      <MaterialCommunityIcons name={fontname} color={fontcolour} size={30} />
+    );
+  }
   resolvecardimage(suittype) {
     if (suittype == 0) return require("../../assets/images/s.png");
     if (suittype == 1) return require("../../assets/images/h.png");
@@ -31,10 +56,11 @@ class PlayingCard extends React.Component {
         <Text style={styles.headertext}>
           {this.resolveCardNumber(cardtype)}
         </Text>
-        <Image
+        {this.resolveimageForcard(suittype)}
+        {/* <Image
           style={styles.dataImage}
           source={this.resolvecardimage(suittype)}
-        />
+        /> */}
       </View>
     );
   }

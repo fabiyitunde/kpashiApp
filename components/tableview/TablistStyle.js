@@ -77,9 +77,9 @@ const styles = StyleSheet.create({
 
   likeCommentCountTxt: {
     marginLeft: Metrics.WIDTH * 0.01,
-    color: "#6f6f6f",
-    fontSize: Fonts.moderateScale(12),
-    fontFamily: Fonts.type.sfuiDisplayRegular
+    color: "green",
+    fontSize: Fonts.moderateScale(20),
+    fontFamily: Fonts.type.sfuiDisplayBold
   },
 
   listDivider: {

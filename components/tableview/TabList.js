@@ -67,18 +67,9 @@ export default class Tablist extends Component {
                 onPress={() => alert("Like")}
                 style={styles.countImgBg}
               >
-                <Entypo name="heart" size={15} color="#d4d4d4" />
+                <Entypo name="credit" size={15} color="green" />
                 <Text style={styles.likeCommentCountTxt}>
                   {rowData.likeCount}
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.countImgBg}
-                onPress={() => alert("Comment")}
-              >
-                <Image style={styles.commentImg} source={Images.comments} />
-                <Text style={styles.likeCommentCountTxt}>
-                  {rowData.commentCount}
                 </Text>
               </TouchableOpacity>
             </View>
