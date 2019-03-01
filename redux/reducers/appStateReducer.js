@@ -14,10 +14,13 @@ export default function(state = initialState, action) {
         ...state,
         loggedIn: true,
         mytablelist: action.payload.mytablelist,
-        playerlist: action.payload.playerlist,
         userid: action.payload.userid
       };
-
+    case clientTriggeredActions.loadOnlineUsersList:
+      return {
+        ...state,
+        playerlist: action.playerlist
+      };
     case clientTriggeredActions.pendingInvitationTreated:
       var copyoflist = [...state.mytablelist];
       var existinrec = copyoflist.find(a => a.id == action.payload.id);
@@ -115,6 +118,18 @@ export default function(state = initialState, action) {
       return {
         ...state,
         mytablelist: newlist
+      };
+    case serverTriggeredActions.playerIsReadyToplay:
+      var copyoflist = [...state.mytablelist];
+      var existinrec = copyoflist.find(
+        a => a.id == action.eventdata.tableinfo.id
+      );
+      if (existinrec == null) return state;
+      var index = copyoflist.indexOf(existinrec);
+      copyoflist[index] = action.eventdata.tableinfo;
+      return {
+        ...state,
+        mytablelist: copyoflist
       };
     case serverTriggeredActions.tableinviteResponse:
       var copyoflist = [...state.mytablelist];

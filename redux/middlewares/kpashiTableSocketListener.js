@@ -23,7 +23,6 @@ const processplayerRemovedFromTable = (action, state) => {
 
   if (hostplayerid != state.app.userid) {
     const address = "Table" + action.eventdata.payload.tableinfo.id;
-    console.log("Listener Removed", address);
     io.removeListener(address);
   }
 };

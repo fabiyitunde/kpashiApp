@@ -35,6 +35,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import styles from "./styles";
 import PlayingCard from "../../playingcard/card";
+import KpashiOpenedCards from "../../kpashiUIComponents/kpashiOpenedCards";
 export default class OpenedCards extends Component {
   constructor(props) {
     super(props);
@@ -50,18 +51,8 @@ export default class OpenedCards extends Component {
     }
     var gameinfo = this.props.gameinfo;
     return gameinfo.openedcards == null ? null : (
-      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-        {gameinfo.openedcards.map((card, index) => {
-          return (
-            <View style={styles.imgs} key={index}>
-              <PlayingCard
-                suittype={card.suittype}
-                cardtype={card.cardtype}
-                style={styles.postedImage}
-              />
-            </View>
-          );
-        })}
+      <ScrollView horizontal={true}>
+        <KpashiOpenedCards offset={75} cards={gameinfo.openedcards} />
       </ScrollView>
     );
   }

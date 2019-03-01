@@ -121,3 +121,24 @@ export const removePlayerFromTable = (
       });
     });
 };
+
+export const loadListOfPlayersOnline = callback => dispatch => {
+  fetch(`${globalParams.baseurl}/registration/getOnlineUsers`, {
+    method: "GET",
+    mode: "cors",
+    headers: { "Content-Type": "application/json" }
+  })
+    .then(resp => resp.json())
+    .then(data => {
+      dispatch({
+        type: clientTriggeredActions.loadOnlineUsersList,
+        playerlist: data
+      });
+      callback();
+    })
+    .catch(error => {
+      error.text().then(errorMessage => {
+        Alert.alert("Error", errorMessage);
+      });
+    });
+};

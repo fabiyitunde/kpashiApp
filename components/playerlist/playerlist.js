@@ -32,11 +32,15 @@ import { View } from "react-native-animatable";
 import * as linq from "linq";
 import { connect } from "react-redux";
 import { SearchBar } from "react-native-elements";
+import { loadListOfPlayersOnline } from "../../redux/actions/appStateActions";
 class PlayerList extends Component {
   state = {
     data: [],
     searchtext: ""
   };
+  constructor(props) {
+    super(props);
+  }
   SearchFilterFunction = text => {
     this.setState({ searchtext: text });
     const { playerlist } = this.props;
@@ -67,10 +71,13 @@ class PlayerList extends Component {
       .toArray();
     return data;
   }
+  componentWillMount() {}
   componentDidMount() {
-    const { playerlist } = this.props;
-    const data = this.convertListToDisplayFormat(playerlist);
-    this.setState({ data: data });
+    this.props.loadListOfPlayersOnline(() => {
+      const { playerlist } = this.props;
+      const data = this.convertListToDisplayFormat(playerlist);
+      this.setState({ data: data });
+    });
   }
   render() {
     const { onPlayerSelected, selectButtonDescription } = this.props;
@@ -123,5 +130,5 @@ function mapStateToProps(state, props) {
 //Connect everything
 export default connect(
   mapStateToProps,
-  {}
+  { loadListOfPlayersOnline }
 )(PlayerList);

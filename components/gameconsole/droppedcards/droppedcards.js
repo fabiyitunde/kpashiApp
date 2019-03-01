@@ -35,6 +35,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import styles from "./styles";
 import PlayingCard from "../../playingcard/card";
+import KpashiPlayerDetail from "../../kpashiUIComponents/kpashiPlayerDetail/kpashiPlayerDetail";
 export default class DroppedCards extends Component {
   constructor(props) {
     super(props);
@@ -50,62 +51,17 @@ export default class DroppedCards extends Component {
     }
     var gameinfo = this.props.gameinfo;
     return (
-      <View style={styles.imgs}>
+      <ScrollView horizontal={true}>
         {gameinfo.playerDetails.map((item, index) => {
           return (
-            <View style={styles.listContainer} key={index}>
-              <View style={styles.slide}>
-                <Image
-                  source={{ uri: item.photourl }}
-                  style={styles.imageStyle}
-                />
-                <View style={styles.titleBar}>
-                  <Text style={styles.name}>{item.fullname}</Text>
-                </View>
-                {item.gameStatus == "" ? null : (
-                  <Text style={styles.name}>{item.gameStatus}</Text>
-                )}
-                {item.cards == null ? null : (
-                  <View style={styles.bottombar}>
-                    <View style={styles.likeContent}>
-                      <Text style={styles.textStyle}>{item.score}</Text>
-                    </View>
-                  </View>
-                )}
-              </View>
-              <View style={styles.notificationContent}>
-                {item.dropedcard == null ? null : (
-                  <View style={styles.callcard}>
-                    <PlayingCard
-                      suittype={item.dropedcard.suittype}
-                      cardtype={item.dropedcard.cardtype}
-                    />
-                  </View>
-                )}
-
-                {item.cards == null ? null : (
-                  <ScrollView
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={true}
-                    style={{ flex: 1 }}
-                  >
-                    {item.cards.map((card, index) => {
-                      return (
-                        <PlayingCard
-                          key={index}
-                          suittype={card.suittype}
-                          cardtype={card.cardtype}
-                        />
-                      );
-                    })}
-                  </ScrollView>
-                )}
-              </View>
-              <View style={styles.separatorStyle} />
-            </View>
+            <KpashiPlayerDetail
+              key={index}
+              playerdetail={item}
+              gameinfo={gameinfo}
+            />
           );
         })}
-      </View>
+      </ScrollView>
     );
   }
 }

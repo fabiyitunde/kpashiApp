@@ -11,6 +11,9 @@ const styles = StyleSheet.create({
   imgs: {
     paddingRight: 0
   },
+  imgContainer: {
+    flex: 1
+  },
   callcard: {
     borderColor: "blue",
     borderWidth: 2

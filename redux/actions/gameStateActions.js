@@ -76,6 +76,7 @@ export const dealcards = (gameid, userid) => dispatch => {
       });
     })
     .catch(error => {
+      console.log("Error ...", error);
       error.text().then(errorMessage => {
         Alert.alert("Error", errorMessage);
       });

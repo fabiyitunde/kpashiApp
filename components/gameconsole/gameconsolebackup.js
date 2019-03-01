@@ -11,9 +11,7 @@ import {
   ListView,
   ScrollView,
   BackHandler,
-  I18nManager,
-  Animated,
-  Easing
+  I18nManager
 } from "react-native";
 import {
   Container,
@@ -39,7 +37,7 @@ import styles from "./styles";
 import MyCards from "./mycards/mycards";
 import DroppedCards from "./droppedcards/droppedcards";
 import OpenedCards from "./openedcards/openedcards";
-import { Fonts } from "../../Themes/";
+import GameDetails from "./gamedetails/gamedetails";
 import { connect } from "react-redux";
 import { getItemFromLocalStorageSync } from "../../utilities/localstore";
 import {
@@ -49,37 +47,21 @@ import {
   iAmReadyToPlay,
   dropCard
 } from "../../redux/actions/gameStateActions";
-import { openChatOverLayForTable } from "../../redux/actions/chatActions";
+const ProfileImage =
+  "https://antiqueruby.aliansoftware.net//Images/profile/user_p06.png";
 
-class GameConsole extends Component {
+class GameConsoleBackup extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      xposition: new Animated.Value(0) // Initial value for opacity: 0
-    };
+    this.state = {};
     this.tableid = props.navigation.getParam("tableid", "");
   }
-
   componentWillMount() {
     var that = this;
     BackHandler.addEventListener("hardwareBackPress", function() {
       that.props.navigation.navigate("Profile");
       return true;
     });
-  }
-  componentDidUpdate() {
-    var currentgame = this.props.gamelist.find(a => a.tableid == this.tableid);
-    if (currentgame.gamestatusdetail.description == "DealingCards") {
-      this.state.xposition.setValue(0);
-      Animated.timing(
-        this.state.xposition, // The animated value to drive
-        {
-          toValue: 2,
-          duration: 2000,
-          easing: Easing.bounce
-        }
-      ).start();
-    }
   }
   handleActionButtonClicked = async gamedetails => {
     var authdata = JSON.parse(await getItemFromLocalStorageSync("auth"));
@@ -183,25 +165,14 @@ class GameConsole extends Component {
       card.cardtype
     );
   };
-
   render() {
     StatusBar.setBarStyle("light-content", true);
     if (Platform.OS === "android") {
       StatusBar.setBackgroundColor("transparent", true);
       StatusBar.setTranslucent(true);
     }
-
     this.tableid = this.props.navigation.getParam("tableid", "");
     var currentgame = this.props.gamelist.find(a => a.tableid == this.tableid);
-    var tableinfo = this.props.mytablelist.find(a => a.id == this.tableid);
-    var userid = this.props.userid;
-    const playerinfo = tableinfo.members.find(a => a.id == userid);
-
-    const marginLeft = this.state.xposition.interpolate({
-      inputRange: [0, 1, 2],
-      outputRange: [0, 300, 0]
-    });
-
     return (
       <Container style={{ backgroundColor: "#2d324f" }}>
         <Header androidStatusBarColor={"#0000"} style={styles.header}>
@@ -226,48 +197,29 @@ class GameConsole extends Component {
 
           {/* Title */}
           <Body style={styles.body}>
-            <Title style={styles.headerTitle}>
-              {"Balance : " + playerinfo.unitbalance}
-            </Title>
+            <Title style={styles.headerTitle}>Game</Title>
           </Body>
 
           {/* Right Icon */}
           <Right style={styles.right}>
-            <TouchableOpacity
-              style={{ flexDirection: "row" }}
-              onPress={() => this.props.openChatOverLayForTable(this.tableid)}
-            >
-              <View style={styles.heartBg}>
-                <FontAwesome
-                  name="comments"
-                  size={Fonts.moderateScale(30)}
-                  color="white"
-                />
-              </View>
-            </TouchableOpacity>
+            <Button transparent />
           </Right>
         </Header>
-
         <View style={styles.headerContainer}>
           <View style={styles.profileContainer}>
             {this.renderNextToplay(currentgame)}
             {this.renderActionButton(currentgame)}
           </View>
           <View style={styles.separatorStyle} />
-
-          <Animated.View
-            style={{
-              ...styles.followContainer,
-              marginLeft: marginLeft // Bind opacity to animated value
-            }}
-          >
+          <View style={styles.followContainer}>
             <OpenedCards gameinfo={currentgame} />
-          </Animated.View>
+          </View>
         </View>
 
         <Content style={styles.slidesec}>
           <DroppedCards gameinfo={currentgame} />
           {this.renderMyCards(currentgame)}
+          <GameDetails gameinfo={currentgame} />
         </Content>
       </Container>
     );
@@ -275,21 +227,12 @@ class GameConsole extends Component {
 }
 function mapStateToProps(state, props) {
   return {
-    mytablelist: state.app.mytablelist,
-    gamelist: state.game.gamelist,
-    userid: state.app.userid
+    gamelist: state.game.gamelist
   };
 }
 
 //Connect everything
 export default connect(
   mapStateToProps,
-  {
-    shuffleCards,
-    dealcards,
-    startNewGame,
-    iAmReadyToPlay,
-    dropCard,
-    openChatOverLayForTable
-  }
-)(GameConsole);
+  { shuffleCards, dealcards, startNewGame, iAmReadyToPlay, dropCard }
+)(GameConsoleBackup);

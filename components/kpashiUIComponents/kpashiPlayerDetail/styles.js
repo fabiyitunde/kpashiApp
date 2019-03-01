@@ -1,5 +1,5 @@
 import { Platform, StyleSheet, Dimensions } from "react-native";
-import { Fonts, Metrics, Colors } from "../../Themes/";
+import { Fonts, Metrics, Colors } from "../../../Themes/";
 
 const styles = StyleSheet.create({
   logosec: {
@@ -9,7 +9,14 @@ const styles = StyleSheet.create({
     flexDirection: "row"
   },
   imgs: {
-    paddingRight: Metrics.WIDTH * 0.05
+    paddingRight: 0
+  },
+  imgContainer: {
+    flex: 1
+  },
+  callcard: {
+    borderColor: "blue",
+    borderWidth: 2
   },
   backbtn: {
     width: 30
@@ -20,14 +27,10 @@ const styles = StyleSheet.create({
     alignItems: "flex-start"
   },
   slidesec: {
-    height: Metrics.HEIGHT,
-    width: Metrics.WIDTH,
+    height: Metrics.HEIGHT * 0.905,
     position: "relative",
-    backgroundColor: "white"
-  },
-  mainbody: {
-    height: Metrics.HEIGHT,
-    width: Metrics.WIDTH
+    backgroundColor: "white",
+    paddingTop: Metrics.HEIGHT * 0.01
   },
   hearticon: {
     marginRight: 3
@@ -160,13 +163,15 @@ const styles = StyleSheet.create({
 
   listContainer: {
     backgroundColor: "white",
-    paddingLeft: Metrics.WIDTH * 0.04
+    marginLeft: Metrics.WIDTH * 0.015,
+    flex: 1
   },
 
   postImageContent: {
     flexDirection: "row",
     paddingTop: Metrics.HEIGHT * 0.015,
-    paddingBottom: Metrics.HEIGHT * 0.01
+    paddingBottom: Metrics.HEIGHT * 0.01,
+    width: Metrics.WIDTH
   },
 
   name: {
@@ -178,7 +183,7 @@ const styles = StyleSheet.create({
 
   notification: {
     color: "#b7b7b7",
-    fontFamily: Fonts.type.SFUIDisplayRegular,
+    fontFamily: Fonts.type.SFUIDisplayBold,
     fontSize: 12
   },
 
@@ -192,8 +197,8 @@ const styles = StyleSheet.create({
   },
 
   postedImage: {
-    height: Metrics.HEIGHT * 0.09,
-    width: Metrics.HEIGHT * 0.09
+    height: Metrics.HEIGHT * 0.06,
+    width: Metrics.HEIGHT * 0.06
   },
 
   timerImage: {
@@ -205,7 +210,8 @@ const styles = StyleSheet.create({
 
   slide: {
     marginVertical: Metrics.HEIGHT * 0.0225,
-    flexDirection: "row"
+    flexDirection: "column",
+    flex: 1
   },
 
   imageStyle: {
@@ -218,8 +224,9 @@ const styles = StyleSheet.create({
 
   notificationContent: {
     marginTop: Metrics.WIDTH * 0.005,
-    marginRight: Metrics.WIDTH * 0.02,
-    width: Metrics.WIDTH * 0.78
+    width: Metrics.WIDTH,
+    flex: 1,
+    flexDirection: "row"
   },
 
   titleBar: {
@@ -256,9 +263,9 @@ const styles = StyleSheet.create({
   },
 
   textStyle: {
-    fontFamily: Fonts.type.SFUIDisplayRegular,
+    fontFamily: Fonts.type.sfuiDisplayBold,
     fontSize: 15,
-    color: "#6f6f6f"
+    color: "blue"
   },
 
   separatorStyle: {
