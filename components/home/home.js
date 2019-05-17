@@ -10,6 +10,7 @@ import { AppLoading, Asset, Font, Icon } from "expo";
 import AppNavigator from "../../navigation/AppNavigator";
 import Login from "../login/login";
 import { getItemFromLocalStorage } from "../../utilities/localstore";
+
 import { connect } from "react-redux";
 import {
   loggin_authenticated_user,
@@ -21,8 +22,6 @@ class Home extends React.Component {
   };
 
   componentDidMount() {
-    // logIn();
-
     var loginuser = async () => {
       const auth = await getItemFromLocalStorage("auth");
       if (auth) {

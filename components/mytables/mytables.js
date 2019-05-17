@@ -43,6 +43,7 @@ import { startListeningForIncomingMessages } from "../../redux/actions/chatActio
 import Drawer from "react-native-drawer";
 import MenuDrawer from "../menudrawer/menudrawer";
 import tweens from "./tweens";
+
 const drawerStyles = {
   drawer: {
     shadowColor: "#000000",

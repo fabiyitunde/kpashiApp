@@ -50,7 +50,7 @@ class PlayerList extends Component {
     } else {
       var filteredlist = linq
         .from(playerlist)
-        .where(a => a.fullname.indexOf(text) !== -1)
+        .where(a => a.fullname.toLowerCase().indexOf(text.toLowerCase()) !== -1)
         .toArray();
       data = this.convertListToDisplayFormat(filteredlist);
     }
